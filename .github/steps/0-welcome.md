@@ -5,14 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tableau de Suivi</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 8px;
-        }
         table {
-            width: 10%;
+            width: 8%;
             border-collapse: collapse;
-            margin: 8px 0;
+            margin: 20px 0;
         }
         th, td {
             border: 1px solid #ddd;
@@ -21,10 +17,6 @@
         }
         th {
             background-color: #f2f2f2;
-        }
-        /* Réduire la taille de la colonne Obj */
-        th:nth-child(2), td:nth-child(2) {
-            width: 50px; /* Ajustez la largeur selon vos besoins */
         }
     </style>
 </head>
@@ -35,13 +27,13 @@
 <table>
     <tr>
         <th>Indicateur</th>
-        <th>Obj</th>
+        <th>Objectif</th>
         <th>Réalisé</th>
         <th>Actions</th>
     </tr>
     <tr>
         <td>BB</td>
-        <td><input type="number" id="bb-objective" value="0"></td>
+        <td><input type="number" id="bb-objective" value="100" onchange="saveData('bb')"></td>
         <td id="bb-realized">0</td>
         <td>
             <button onclick="updateRealized('bb', 1)">+1</button>
@@ -49,8 +41,8 @@
         </td>
     </tr>
     <tr>
-        <td>FM</td>
-        <td><input type="number" id="fm-objective" value="0"></td>
+        <td>Fm</td>
+        <td><input type="number" id="fm-objective" value="200" onchange="saveData('fm')"></td>
         <td id="fm-realized">0</td>
         <td>
             <button onclick="updateRealized('fm', 1)">+1</button>
@@ -58,17 +50,8 @@
         </td>
     </tr>
     <tr>
-        <td>Assurance</td>
-        <td><input type="number" id="assurance-objective" value="0"></td>
-        <td id="assurance-realized">0</td>
-        <td>
-            <button onclick="updateRealized('assurance', 1)">+1</button>
-            <button onclick="updateRealized('assurance', -1)">-1</button>
-        </td>
-    </tr>
-    <tr>
         <td>Mev</td>
-        <td><input type="number" id="mev-objective" value="0"></td>
+        <td><input type="number" id="mev-objective" value="150" onchange="saveData('mev')"></td>
         <td id="mev-realized">0</td>
         <td>
             <button onclick="updateRealized('mev', 1)">+1</button>
@@ -76,8 +59,17 @@
         </td>
     </tr>
     <tr>
+        <td>Assurance</td>
+        <td><input type="number" id="assurance-objective" value="250" onchange="saveData('assurance')"></td>
+        <td id="assurance-realized">0</td>
+        <td>
+            <button onclick="updateRealized('assurance', 1)">+1</button>
+            <button onclick="updateRealized('assurance', -1)">-1</button>
+        </td>
+    </tr>
+    <tr>
         <td>Pro</td>
-        <td><input type="number" id="pro-objective" value="0"></td>
+        <td><input type="number" id="pro-objective" value="300" onchange="saveData('pro')"></td>
         <td id="pro-realized">0</td>
         <td>
             <button onclick="updateRealized('pro', 1)">+1</button>
@@ -95,7 +87,42 @@
         if (currentValue < 0) currentValue = 0; // Empêcher les valeurs négatives
         
         realizedCell.innerText = currentValue;
+        saveData(indicator); // Sauvegarder après modification
     }
+
+    function saveData(indicator) {
+        const objectiveValue = document.getElementById(`${indicator}-objective`).value;
+        const realizedValue = document.getElementById(`${indicator}-realized`).innerText;
+
+        localStorage.setItem(`${indicator}-objective`, objectiveValue);
+        localStorage.setItem(`${indicator}-realized`, realizedValue);
+    }
+
+    function loadData() {
+        const indicators = ['bb', 'fm', 'mev', 'assurance', 'pro'];
+        indicators.forEach(indicator => {
+            const objectiveValue = localStorage.getItem(`${indicator}-objective`);
+            const realizedValue = localStorage.getItem(`${indicator}-realized`);
+
+            if (objectiveValue !== null) {
+                document.getElementById(`${indicator}-objective`).value = objectiveValue;
+            }
+            if (realizedValue !== null) {
+                document.getElementById(`${indicator}-realized`).innerText = realizedValue;
+            }
+        });
+    }
+
+    // Charger les données au chargement de la page
+    window.onload = loadData;
+
+    // Sauvegarde automatique toutes les 1 seconde
+    setInterval(() => {
+        const indicators = ['bb', 'fm', 'mev', 'assurance', 'pro'];
+        indicators.forEach(indicator => {
+            saveData(indicator);
+        });
+    }, 1000); // 1000 millisecondes = 1 seconde
 </script>
 
 </body>
