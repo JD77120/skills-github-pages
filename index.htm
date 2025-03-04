@@ -1,62 +1,76 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-  <title>Tableau de Suivi</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de Suivi</title>
+    <style>
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
-  <table>
-    <thead>
-      <tr>
-        <th>Indicateur</th>
-        <th>Réalisé</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>BB</td>
-        <td data-indicator="BB">0</td>
-        <td>
-          <button class="decrement" data-indicator="BB">-</button>
-          <button class="increment" data-indicator="BB">+</button>
-        </td>
-      </tr>
-      <tr>
-        <td>FM</td>
-        <td data-indicator="FM">0</td>
-        <td>
-          <button class="decrement" data-indicator="FM">-</button>
-          <button class="increment" data-indicator="FM">+</button>
-        </td>
-      </tr>
-      <tr>
-        <td>MEV</td>
-        <td data-indicator="MEV">0</td>
-        <td>
-          <button class="decrement" data-indicator="MEV">-</button>
-          <button class="increment" data-indicator="MEV">+</button>
-        </td>
-      </tr>
-      <tr>
-        <td>ASSU</td>
-        <td data-indicator="ASSU">0</td>
-        <td>
-          <button class="decrement" data-indicator="ASSU">-</button>
-          <button class="increment" data-indicator="ASSU">+</button>
-        </td>
-      </tr>
-      <tr>
-        <td>PRO</td>
-        <td data-indicator="PRO">0</td>
-        <td>
-          <button class="decrement" data-indicator="PRO">-</button>
-          <button class="increment" data-indicator="PRO">+</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
 
-  <script src="script.js"></script>
+<h2>Tableau de Suivi</h2>
+
+<table>
+    <tr>
+        <th>Indicateur</th>
+        <th>Objectif</th>
+        <th>Ajouter Volume</th>
+    </tr>
+    <tr>
+        <td>BB</td>
+        <td id="bb-objective">100</td>
+        <td><button onclick="addVolume('bb')">Ajouter</button></td>
+    </tr>
+    <tr>
+        <td>Fm</td>
+        <td id="fm-objective">200</td>
+        <td><button onclick="addVolume('fm')">Ajouter</button></td>
+    </tr>
+    <tr>
+        <td>Mev</td>
+        <td id="mev-objective">150</td>
+        <td><button onclick="addVolume('mev')">Ajouter</button></td>
+    </tr>
+    <tr>
+        <td>Assurance</td>
+        <td id="assurance-objective">250</td>
+        <td><button onclick="addVolume('assurance')">Ajouter</button></td>
+    </tr>
+    <tr>
+        <td>Pro</td>
+        <td id="pro-objective">300</td>
+        <td><button onclick="addVolume('pro')">Ajouter</button></td>
+    </tr>
+</table>
+
+<script>
+    function addVolume(indicator) {
+        const objectiveCell = document.getElementById(`${indicator}-objective`);
+        let currentValue = parseInt(objectiveCell.innerText);
+        const volumeToAdd = prompt(`Ajouter un volume pour ${indicator}:`);
+        
+        if (volumeToAdd && !isNaN(volumeToAdd)) {
+            currentValue += parseInt(volumeToAdd);
+            objectiveCell.innerText = currentValue;
+        } else {
+            alert("Veuillez entrer un nombre valide.");
+        }
+    }
+</script>
+
 </body>
 </html>
